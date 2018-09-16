@@ -19,7 +19,8 @@ def isNode(wa):
         return True
 
 class Graph:
-    def __init__(self):
+    def __init__(self, whiteMap):
+        self.whiteMap = whiteMap
         self.nodes = set()
         self.edges = defaultdict(set)
         self.distances = {}
@@ -29,14 +30,17 @@ class Graph:
     
     def addEdge(self, start, end, distance):
         self.edges[start].add(end)
-        # self.edges[end].append(start)
         self.distances[(start,end)] = distance
 
-    def fromWhiteMap(self, whiteMap):
-        for y in range(whiteMap.y):
-            for x in range(whiteMap.x):
-                if whiteMap[x,y]:
-                    wa = whiteMap.getWhiteAdjacents(whiteMap.getAdjacents(x,y))
+    def checkCursor(self, cursor):
+        wa = self.whiteMap.getWhiteAdjacents(self.whiteMap.getAdjacents(*cursor))
+        return isNode(wa)
+
+    def fromWhiteMap(self):
+        for y in range(self.whiteMap.y):
+            for x in range(self.whiteMap.x):
+                if self.whiteMap[x,y]:
+                    wa = self.whiteMap.getWhiteAdjacents(self.whiteMap.getAdjacents(x,y))
                     if isNode(wa):
                         self.addNode((x,y))
 
@@ -47,9 +51,9 @@ class Graph:
             while True:
                 d += 1
                 cursor = (cursor[0]-1, cursor[1])
-                if not whiteMap[cursor]:
+                if not self.whiteMap[cursor]:
                     break
-                if cursor in self.nodes:
+                if self.checkCursor(cursor):
                     self.addEdge(cursor,node,d)
                     break
             #Up
@@ -58,9 +62,10 @@ class Graph:
             while True:
                 d += 1
                 cursor = (cursor[0], cursor[1]-1)
-                if cursor[1] < 0 or not whiteMap[cursor]:
+                if cursor[1] < 0 or not self.whiteMap[cursor]:
                     break
-                if cursor in self.nodes:
+                
+                if self.checkCursor(cursor):
                     self.addEdge(cursor,node,d)
                     break
             #Right
@@ -69,9 +74,9 @@ class Graph:
             while True:
                 d += 1
                 cursor = (cursor[0]+1, cursor[1])
-                if not whiteMap[cursor]:
+                if not self.whiteMap[cursor]:
                     break
-                if cursor in self.nodes:
+                if self.checkCursor(cursor):
                     self.addEdge(node,cursor,d)
                     break
             #Down
@@ -80,8 +85,8 @@ class Graph:
             while True:
                 d += 1
                 cursor = (cursor[0], cursor[1]+1)
-                if cursor[1] >= whiteMap.y or not whiteMap[cursor]:
+                if cursor[1] >= self.whiteMap.y or not self.whiteMap[cursor]:
                     break
-                if cursor in self.nodes:
+                if self.checkCursor(cursor):
                     self.addEdge(node,cursor,d)
                     break
