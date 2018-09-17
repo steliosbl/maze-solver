@@ -44,49 +44,59 @@ class Graph:
                     if isNode(wa):
                         self.addNode((x,y))
 
+        dirMap = [[[False, False, False, False] for i in range(self.whiteMap.x)] for j in range(self.whiteMap.y)]
+
         for node in self.nodes:
             #Left
-            d = 0
-            cursor = (node[0], node[1])
-            while True:
-                d += 1
-                cursor = (cursor[0]-1, cursor[1])
-                if not self.whiteMap[cursor]:
-                    break
-                if self.checkCursor(cursor):
-                    self.addEdge(cursor,node,d)
-                    break
+            if not dirMap[node[1]][node[0]][2]:
+                d = 0
+                cursor = (node[0], node[1])
+                while True:
+                    d += 1
+                    cursor = (cursor[0]-1, cursor[1])
+                    if not self.whiteMap[cursor]:
+                        break
+                    if self.checkCursor(cursor):
+                        self.addEdge(cursor,node,d)
+                        dirMap[cursor[1]][cursor[0]][0] = True
+                        break
             #Up
-            d = 0
-            cursor = (node[0], node[1])
-            while True:
-                d += 1
-                cursor = (cursor[0], cursor[1]-1)
-                if cursor[1] < 0 or not self.whiteMap[cursor]:
-                    break
-                
-                if self.checkCursor(cursor):
-                    self.addEdge(cursor,node,d)
-                    break
-            #Right
-            d = 0
-            cursor = (node[0], node[1])
-            while True:
-                d += 1
-                cursor = (cursor[0]+1, cursor[1])
-                if not self.whiteMap[cursor]:
-                    break
-                if self.checkCursor(cursor):
-                    self.addEdge(node,cursor,d)
-                    break
-            #Down
-            d = 0
-            cursor = (node[0], node[1])
-            while True:
-                d += 1
-                cursor = (cursor[0], cursor[1]+1)
-                if cursor[1] >= self.whiteMap.y or not self.whiteMap[cursor]:
-                    break
-                if self.checkCursor(cursor):
-                    self.addEdge(node,cursor,d)
-                    break
+            if not dirMap[node[1]][node[0]][3]:
+                d = 0
+                cursor = (node[0], node[1])
+                while True:
+                    d += 1
+                    cursor = (cursor[0], cursor[1]-1)
+                    if cursor[1] < 0 or not self.whiteMap[cursor]:
+                        break
+                    
+                    if self.checkCursor(cursor):
+                        self.addEdge(cursor,node,d)
+                        dirMap[cursor[1]][cursor[0]][1] = True
+                        break
+            if not dirMap[node[1]][node[0]][0]:
+                #Right
+                d = 0
+                cursor = (node[0], node[1])
+                while True:
+                    d += 1
+                    cursor = (cursor[0]+1, cursor[1])
+                    if not self.whiteMap[cursor]:
+                        break
+                    if self.checkCursor(cursor):
+                        self.addEdge(node,cursor,d)
+                        dirMap[cursor[1]][cursor[0]][2] = True
+                        break
+            if not dirMap[node[1]][node[0]][1]:
+                #Down
+                d = 0
+                cursor = (node[0], node[1])
+                while True:
+                    d += 1
+                    cursor = (cursor[0], cursor[1]+1)
+                    if cursor[1] >= self.whiteMap.y or not self.whiteMap[cursor]:
+                        break
+                    if self.checkCursor(cursor):
+                        self.addEdge(node,cursor,d)
+                        dirMap[cursor[1]][cursor[0]][3] = True
+                        break
