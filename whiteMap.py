@@ -52,6 +52,7 @@ class WhiteMap:
         for x in range(self.x):
             if self[x,0]:
                 return (x,0)
+<<<<<<< HEAD
 
     def get_exit(self):
         for x in range(self.x):
@@ -60,5 +61,13 @@ class WhiteMap:
 
     def getWhiteAdjacents(self, adjacents):
         return [a for a in adjacents if self[a[1]][a[0]]]
+=======
+>>>>>>> master
 
-    
+    def get_exit(self):
+        for x in range(self.x):
+            if self[x,self.y-1]:
+                return (x,self.y-1)
+
+    def getWhiteAdjacents(self, adjacents):
+        return [a for a in adjacents if self[a[1]][a[0]]]
