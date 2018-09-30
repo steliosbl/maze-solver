@@ -8,7 +8,8 @@ class Graph:
 
     Edge = namedtuple('Edge', 'start, end, cost')
 
-    def __init__(self, edges):
+    def __init__(self, nodes, edges):
+        self.nodes = nodes
         self.edges = edges
 
     def get_node_pairs(self, n1, n2, both_ends=True):
