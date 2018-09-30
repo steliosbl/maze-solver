@@ -12,8 +12,6 @@ parser.add_argument("-c","--converter", dest="converter", choices=converters.key
 parser.add_argument("-s", "--search", dest="search", choices=searches.keys(), default="dijkstra", help="The algorithm that will be used to find the optimal path to the exit.")
 args = parser.parse_args()
 
-print(args)
-
 print("Loading image to memory..")
 og = Image.open(args.maze)
 wm = WhiteMap.fromImage(og)
@@ -25,7 +23,7 @@ converter.useWhiteMap(wm)
 converter.convert()
 graph = converter.exportGraph()
 conversion_end = timer()
-print("Conversion took {0}ms".format(str(conversion_end-conversion_start)))
+print("Conversion took {0} seconds".format(str(conversion_end-conversion_start)))
 
 print("Searching graph..")
 search_start = timer()
@@ -34,7 +32,7 @@ search.useGraph(graph)
 search.find()
 path = search.exportPath()
 search_end = timer()
-print("Search took {0}ms".format(str(search_end-search_start)))
+print("Search took {0} seconds".format(str(search_end-search_start)))
 
 print("Drawing path..")
 plotter = PathPlotter(og)
