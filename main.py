@@ -1,5 +1,5 @@
 from PIL import Image
-import whiteMap
+from whiteMap import WhiteMap
 from timeit import default_timer as timer
 from converters import all as converters
 from searches import all as searches
@@ -16,7 +16,7 @@ print(args)
 
 print("Loading image to memory..")
 og = Image.open(args.maze)
-wm = whiteMap.WhiteMap.fromImage(og)
+wm = WhiteMap.fromImage(og)
 
 print("Converting to graph..")
 conversion_start = timer()

@@ -1,4 +1,4 @@
-from scanConverter import ScanConverter
+from converters.scanConverter import ScanConverter
 all = {
     "scan":ScanConverter
 }
