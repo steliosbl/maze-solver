@@ -1,8 +1,8 @@
 from PIL import Image
 import whiteMap
 from timeit import default_timer as timer
-from converters import converters
-from searches import searches
+from converters import all as converters
+from searches import all as searches
 import argparse
 from pathPlotter import PathPlotter
 
