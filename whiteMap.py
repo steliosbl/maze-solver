@@ -1,4 +1,5 @@
 from PIL import Image
+from mapToGraphConverter import MapToGraphConverter
 
 class WhiteMap:
     def __init__(self, _):
@@ -25,6 +26,9 @@ class WhiteMap:
         wm = [[bool(pixels[i,j]) for i in range(img.size[0])] for j in range(img.size[1])]
         return WhiteMap(wm)
 
+    def fromDimensions(x,y):
+        return WhiteMap([[False for i in range(x)] for j in range(y)])
+
     def toImage(self):
         img = Image.new("1", (self.x, self.y))
         pixels = img.load()
@@ -33,41 +37,19 @@ class WhiteMap:
                 pixels[x,y] = int(self[x,y])
         return img
 
-    def fromDimensions(x,y):
-        return WhiteMap([[False for i in range(x)] for j in range(y)])
-
-    def getAdjacents(self, x, y):
-        r = []
-        if x != 0:
-            r.append((x-1, y))
-        if y != 0:
-            r.append((x, y-1))
-        if x != self.x - 1:
-            r.append((x+1,y))
-        if y != self.y - 1:
-            r.append((x,y+1))
-        return r
+    def toGraph(self, converter):
+        if not isinstance(converter, MapToGraphConverter):
+            raise TypeError("Provided converter is not instance of the required abstract class MapToGraphConverter")
+        converter.useWhiteMap(self)
+        converter.convert()
+        return converter.exportGraph()
 
     def get_entrance(self):
         for x in range(self.x):
             if self[x,0]:
                 return (x,0)
-<<<<<<< HEAD
 
     def get_exit(self):
         for x in range(self.x):
             if self[x,self.y-1]:
                 return (x,self.y-1)
-
-    def getWhiteAdjacents(self, adjacents):
-        return [a for a in adjacents if self[a[1]][a[0]]]
-=======
->>>>>>> master
-
-    def get_exit(self):
-        for x in range(self.x):
-            if self[x,self.y-1]:
-                return (x,self.y-1)
-
-    def getWhiteAdjacents(self, adjacents):
-        return [a for a in adjacents if self[a[1]][a[0]]]
