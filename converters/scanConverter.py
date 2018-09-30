@@ -88,4 +88,5 @@ class ScanConverter(MapToGraphConverter):
         self.edges.add(Edge((exit.position[0], exit.position[1]-1), exit.position, 1))
 
     def exportGraph(self):
-        pass
+        r = Graph(self.nodes, self.edges)
+        return r
