@@ -118,14 +118,14 @@ class TraversalConverter(MapToGraphConverter):
     def convert(self):
         visited = WhiteMap.fromDimensions(self.whiteMap.x, self.whiteMap.y)
         queue = deque()
-        queue.appendleft(Cursor(*self.whiteMap.entrance, Direction.Down))
-        self.startEdge(self.whiteMap.entrance, Direction.Down)
+        queue.appendleft(Cursor(*self.whiteMap.endpoints[0], Direction.Down))
+        self.startEdge(self.whiteMap.endpoints[0], Direction.Down)
         while queue:
             cycle = False
             cur = queue[0]
             queue.popleft()
             white_adjacents = []
-            if cur.position != self.whiteMap.exit:
+            if cur.position != self.whiteMap.endpoints[1]:
                 dirs = getDirectionsToCheck(cur.direction)
                 for direction in dirs:
                     check = cur.move(direction)
@@ -136,12 +136,12 @@ class TraversalConverter(MapToGraphConverter):
                         else:
                             cycle = True
             visited[cur.position] = True
-            if len(white_adjacents) in [0,2] or white_adjacents[0].direction != cur.direction or cur.position==self.whiteMap.exit:
+            if len(white_adjacents) in [0,2] or white_adjacents[0].direction != cur.direction or cur.position==self.whiteMap.endpoints[1]:
                 self.endEdge(cur)
                 for check in white_adjacents:
                     self.startEdge(cur.position, check.direction)
             else:
-                if cur.position != self.whiteMap.entrance:
+                if cur.position != self.whiteMap.endpoints[0]:
                     self.continueEdge(cur)
                 if cycle:
                     self.endEdge(white_adjacents[0])

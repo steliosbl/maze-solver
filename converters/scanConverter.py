@@ -11,8 +11,8 @@ class ScanConverter(MapToGraphConverter):
 
     def convert(self):
         upBuffer = [None] * self.whiteMap.x
-        upBuffer[self.whiteMap.entrance[0]] = Node(self.whiteMap.entrance)
-        self.nodes.add(Node(self.whiteMap.entrance))
+        upBuffer[self.whiteMap.endpoints[0][0]] = Node(self.whiteMap.endpoints[0])
+        self.nodes.add(Node(self.whiteMap.endpoints[0]))
         for y in range(self.whiteMap.y-1): #Do not check last row
             leftBuffer = None
             previous = False
@@ -78,7 +78,7 @@ class ScanConverter(MapToGraphConverter):
                                 self.edges.add(Edge(upBuffer[x].position, node.position, y-upBuffer[x].position[1] + 1))
 
 
-        exit = Node(self.whiteMap.exit)
+        exit = Node(self.whiteMap.endpoints[1])
         exit.adjacents[1] = upBuffer[exit.position[0]]
         self.nodes.add(exit)
         self.edges.add(Edge((exit.position[0], exit.position[1]-1), exit.position, 1))

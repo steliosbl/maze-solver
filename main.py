@@ -17,6 +17,12 @@ print("Loading image to memory..")
 og = Image.open(args.maze)
 wm = WhiteMap.fromImage(og)
 
+print("Locating endpoints..")
+wm.getEndpoints()
+if len(wm.endpoints) != 2:
+    raise ValueError("Invalid number of endpoints")
+
+
 print("Converting to graph..")
 conversion_start = timer()
 converter = converters[args.converter]()
