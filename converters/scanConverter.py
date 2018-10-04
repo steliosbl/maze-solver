@@ -26,8 +26,36 @@ class ScanConverter(MapToGraphConverter):
                 above = self.whiteMap._[y-1][x]
                 below = self.whiteMap._[y+1][x]
                 if current: #All cases other than those below are not nodes, so are not checked
-                    #BWW
-                    if not previous and next:
+                    if previous:
+                        if next: #WWW
+                            if above or below:
+                                node = Node((x,y))
+                                self.nodes.add(node)
+                                node.adjacents[0] = leftBuffer
+                                leftBuffer.adjacents[2] = node
+                                leftBuffer = node
+                                self.edges.add(Edge(leftBuffer.position, node.position, x-leftBuffer.position[0] +1))
+                                if below:
+                                    upBuffer[x] = node
+                                else:
+                                    node.adjacents[1] = upBuffer[x]
+                                    upBuffer[x].adjacents[3] = node
+                                    self.edges.add(Edge(upBuffer[x].position, node.position, y-upBuffer[x].position[1] + 1))
+                        
+                        else: #WWB
+                            node = Node((x,y))
+                            self.nodes.add(node)
+                            node.adjacents[0] = leftBuffer
+                            leftBuffer.adjacents[2] = node
+                            self.edges.add(Edge(leftBuffer.position, node.position, x-leftBuffer.position[0] +1))
+                            if above:
+                                node.adjacents[1] = upBuffer[x]
+                                upBuffer[x].adjacents[3] = node
+                                self.edges.add(Edge(upBuffer[x].position, node.position, y-upBuffer[x].position[1] + 1))
+                            if below:
+                                upBuffer[x] = node
+                else:
+                    if next: #BWW
                         node = Node((x,y))
                         self.nodes.add(node)
                         leftBuffer = node
@@ -38,39 +66,7 @@ class ScanConverter(MapToGraphConverter):
                         if below:
                             upBuffer[x] = node
 
-
-                    #WWB
-                    elif previous and not next:
-                        node = Node((x,y))
-                        self.nodes.add(node)
-                        node.adjacents[0] = leftBuffer
-                        leftBuffer.adjacents[2] = node
-                        self.edges.add(Edge(leftBuffer.position, node.position, x-leftBuffer.position[0] +1))
-                        if above:
-                            node.adjacents[1] = upBuffer[x]
-                            upBuffer[x].adjacents[3] = node
-                            self.edges.add(Edge(upBuffer[x].position, node.position, y-upBuffer[x].position[1] + 1))
-                        if below:
-                            upBuffer[x] = node
-
-                    #WWW
-                    elif previous and next:
-                        if above or below:
-                            node = Node((x,y))
-                            self.nodes.add(node)
-                            node.adjacents[0] = leftBuffer
-                            leftBuffer.adjacents[2] = node
-                            leftBuffer = node
-                            self.edges.add(Edge(leftBuffer.position, node.position, x-leftBuffer.position[0] +1))
-                            if below:
-                                upBuffer[x] = node
-                            else:
-                                node.adjacents[1] = upBuffer[x]
-                                upBuffer[x].adjacents[3] = node
-                                self.edges.add(Edge(upBuffer[x].position, node.position, y-upBuffer[x].position[1] + 1))
-
-                    #BWB
-                    elif not previous and not next:
+                    else: #BWB
                         if above != below: #XOR
                             node = Node((x,y))
                             self.nodes.add(node)
