@@ -31,55 +31,74 @@ class ScanConverter(MapToGraphConverter):
                             if above or below:
                                 node = Node((x,y))
                                 self.nodes.add(node)
+                                cost = x-leftBuffer.position[0] +1
                                 node.adjacents[0] = leftBuffer
+                                node.distances[0] = cost
                                 leftBuffer.adjacents[2] = node
+                                leftBuffer.distances[2] = cost
                                 leftBuffer = node
-                                self.edges.add(Edge(leftBuffer.position, node.position, x-leftBuffer.position[0] +1))
+                                self.edges.add(Edge(leftBuffer.position, node.position, cost))
                                 if below:
                                     upBuffer[x] = node
                                 else:
+                                    cost = y-upBuffer[x].position[1] + 1
                                     node.adjacents[1] = upBuffer[x]
+                                    node.distances[1] = cost
                                     upBuffer[x].adjacents[3] = node
-                                    self.edges.add(Edge(upBuffer[x].position, node.position, y-upBuffer[x].position[1] + 1))
+                                    upBuffer[x].distances[3] = cost
+                                    self.edges.add(Edge(upBuffer[x].position, node.position, cost))
                         
                         else: #WWB
                             node = Node((x,y))
                             self.nodes.add(node)
+                            cost = x-leftBuffer.position[0] +1
                             node.adjacents[0] = leftBuffer
+                            node.distances[0] = cost
                             leftBuffer.adjacents[2] = node
-                            self.edges.add(Edge(leftBuffer.position, node.position, x-leftBuffer.position[0] +1))
+                            leftBuffer.distances[2] = cost
+                            self.edges.add(Edge(leftBuffer.position, node.position, cost))
                             if above:
+                                cost =  y-upBuffer[x].position[1] + 1
                                 node.adjacents[1] = upBuffer[x]
+                                node.distances[1] = cost
                                 upBuffer[x].adjacents[3] = node
-                                self.edges.add(Edge(upBuffer[x].position, node.position, y-upBuffer[x].position[1] + 1))
+                                upBuffer[x].distances[3] = cost
+                                self.edges.add(Edge(upBuffer[x].position, node.position, cost))
                             if below:
                                 upBuffer[x] = node
-                else:
-                    if next: #BWW
-                        node = Node((x,y))
-                        self.nodes.add(node)
-                        leftBuffer = node
-                        if above:
-                            node.adjacents[1] = upBuffer[x]
-                            upBuffer[x].adjacents[3] = node
-                            self.edges.add(Edge(upBuffer[x].position, node.position, y-upBuffer[x].position[1] + 1))
-                        if below:
-                            upBuffer[x] = node
-
-                    else: #BWB
-                        if above != below: #XOR
+                    else:
+                        if next: #BWW
                             node = Node((x,y))
                             self.nodes.add(node)
+                            leftBuffer = node
+                            if above:
+                                cost = y-upBuffer[x].position[1] + 1
+                                node.adjacents[1] = upBuffer[x]
+                                node.distances[1] = cost
+                                upBuffer[x].adjacents[3] = node
+                                upBuffer[x].distances[3] = cost
+                                self.edges.add(Edge(upBuffer[x].position, node.position, cost))
                             if below:
                                 upBuffer[x] = node
-                            else:
-                                node.adjacents[1] = upBuffer[x]
-                                upBuffer[x].adjacents[3] = node
-                                self.edges.add(Edge(upBuffer[x].position, node.position, y-upBuffer[x].position[1] + 1))
+
+                        else: #BWB
+                            if above != below: #XOR
+                                node = Node((x,y))
+                                self.nodes.add(node)
+                                if below:
+                                    upBuffer[x] = node
+                                else:
+                                    cost = y-upBuffer[x].position[1] + 1
+                                    node.adjacents[1] = upBuffer[x]
+                                    node.distances[1] = cost
+                                    upBuffer[x].adjacents[3] = node
+                                    upBuffer[x].distances[3] = cost
+                                    self.edges.add(Edge(upBuffer[x].position, node.position, cost))
 
 
         exit = Node(self.whiteMap.endpoints[1])
         exit.adjacents[1] = upBuffer[exit.position[0]]
+        exit.distances[1] = 1
         self.nodes.add(exit)
         self.edges.add(Edge((exit.position[0], exit.position[1]-1), exit.position, 1))
 

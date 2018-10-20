@@ -5,12 +5,20 @@ class Graph:
         def __init__(self, position):
             self.position = position
             self.adjacents = [False, False, False, False]
+            self.distances = [0,0,0,0]
 
     Edge = namedtuple('Edge', 'start, end, cost')
 
     def __init__(self, nodes, edges):
         self.nodes = nodes
         self.edges = edges
+
+    def getEndpoints(self, endpoints):
+        for node in self.nodes:
+            if node.position == endpoints[0]:
+                self.entrance = node
+            elif node.position == endpoints[1]:
+                self.exit = node
 
     def get_node_pairs(self, n1, n2, both_ends=True):
         if both_ends:
