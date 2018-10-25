@@ -25,6 +25,8 @@ class ScanConverter(MapToGraphConverter):
                 x -= 1
                 above = self.whiteMap._[y-1][x]
                 below = self.whiteMap._[y+1][x]
+                if x == 373 and y == 3:
+                    print(str(previous)+str(current)+str(next)+str(above)+str(below))
                 if current: #All cases other than those below are not nodes, so are not checked
                     if previous:
                         if next: #WWW
@@ -38,15 +40,15 @@ class ScanConverter(MapToGraphConverter):
                                 leftBuffer.distances[2] = cost
                                 self.edges.add(Edge(leftBuffer.position, node.position, cost))
                                 leftBuffer = node
-                                if below:
-                                    upBuffer[x] = node
-                                else:
+                                if above:
                                     cost = y-upBuffer[x].position[1] + 1
                                     node.adjacents[1] = upBuffer[x]
                                     node.distances[1] = cost
                                     upBuffer[x].adjacents[3] = node
                                     upBuffer[x].distances[3] = cost
                                     self.edges.add(Edge(upBuffer[x].position, node.position, cost))
+                                if below:
+                                    upBuffer[x] = node
                         
                         else: #WWB
                             node = Node((x,y))
@@ -85,15 +87,15 @@ class ScanConverter(MapToGraphConverter):
                             if above != below: #XOR
                                 node = Node((x,y))
                                 self.nodes.add(node)
-                                if below:
-                                    upBuffer[x] = node
-                                else:
+                                if above:
                                     cost = y-upBuffer[x].position[1] + 1
                                     node.adjacents[1] = upBuffer[x]
                                     node.distances[1] = cost
                                     upBuffer[x].adjacents[3] = node
                                     upBuffer[x].distances[3] = cost
                                     self.edges.add(Edge(upBuffer[x].position, node.position, cost))
+                                if below:
+                                    upBuffer[x] = node
 
     def exportGraph(self):
         r = Graph(self.nodes, self.edges)
