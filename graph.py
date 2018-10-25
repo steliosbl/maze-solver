@@ -6,6 +6,8 @@ class Graph:
             self.position = position
             self.adjacents = [False, False, False, False]
             self.distances = [0,0,0,0]
+            self.working = None
+            self.finalized = False
 
     Edge = namedtuple('Edge', 'start, end, cost')
 
