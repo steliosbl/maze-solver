@@ -42,6 +42,9 @@ class WhiteMap:
         converter.convert()
         return converter.exportGraph()
 
+    def rotated(self):
+        return zip(*self._[::-1])
+
     def getEndpoints(self):
         r = []
         for x in range(self.x):
@@ -49,7 +52,7 @@ class WhiteMap:
                 if self._[0][x]:
                     r.append((x,0))
                 if self._[self.y-1][x]:
-                    r.append((x,self.y))
+                    r.append((x,self.y-1))
         if len(r) < 2:
             for y in range(self.y):
                 if len(r) < 2:
