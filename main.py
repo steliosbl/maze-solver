@@ -55,3 +55,5 @@ else:
     plotter.plot(path)
     plotter.save(args.outname)
     print("Solved maze saved as {0}".format(args.outname))
+
+    print("Path consists of {} pixels, of which {} are nodes".format(str(plotter.counter), str(len(path))))
