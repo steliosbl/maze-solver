@@ -25,8 +25,6 @@ class ScanConverter(MapToGraphConverter):
                 x -= 1
                 above = self.whiteMap._[y-1][x]
                 below = self.whiteMap._[y+1][x]
-                if x == 373 and y == 3:
-                    print(str(previous)+str(current)+str(next)+str(above)+str(below))
                 if current: #All cases other than those below are not nodes, so are not checked
                     if previous:
                         if next: #WWW

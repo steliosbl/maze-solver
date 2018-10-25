@@ -1,6 +1,7 @@
 class PathPlotter:
     def __init__(self, img):
         self.img = img
+        self.counter = 0
 
     def get_intermediate_positions(self, start, end):
         if start[0] == end[0]:
@@ -22,6 +23,7 @@ class PathPlotter:
             start = path[i-1].position
             end = path[i].position
             positions = self.get_intermediate_positions(start, end) + [start,end]
+            self.counter += len(positions)
             for p in positions:
                 pixels[p] = (0,0,255)
 
