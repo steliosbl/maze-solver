@@ -36,8 +36,8 @@ class ScanConverter(MapToGraphConverter):
                                 node.distances[0] = cost
                                 leftBuffer.adjacents[2] = node
                                 leftBuffer.distances[2] = cost
-                                leftBuffer = node
                                 self.edges.add(Edge(leftBuffer.position, node.position, cost))
+                                leftBuffer = node
                                 if below:
                                     upBuffer[x] = node
                                 else:
