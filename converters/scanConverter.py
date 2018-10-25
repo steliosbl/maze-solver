@@ -10,10 +10,10 @@ class ScanConverter(MapToGraphConverter):
         self.edges = set()
 
     def convert(self):
+        self.whiteMap._.append([False] * self.whiteMap.x) #Add additional wall to bottom so that scanning final row does not cause crash by trying to find below exit
         upBuffer = [None] * self.whiteMap.x
         upBuffer[self.whiteMap.endpoints[0][0]] = Node(self.whiteMap.endpoints[0])
-        self.nodes.add(Node(self.whiteMap.endpoints[0]))
-        for y in range(self.whiteMap.y-1): #Do not check last row
+        for y in range(self.whiteMap.y):
             leftBuffer = None
             previous = False
             next = False
@@ -94,13 +94,6 @@ class ScanConverter(MapToGraphConverter):
                                     upBuffer[x].adjacents[3] = node
                                     upBuffer[x].distances[3] = cost
                                     self.edges.add(Edge(upBuffer[x].position, node.position, cost))
-
-
-        exit = Node(self.whiteMap.endpoints[1])
-        exit.adjacents[1] = upBuffer[exit.position[0]]
-        exit.distances[1] = 1
-        self.nodes.add(exit)
-        self.edges.add(Edge((exit.position[0], exit.position[1]-1), exit.position, 1))
 
     def exportGraph(self):
         r = Graph(self.nodes, self.edges)
