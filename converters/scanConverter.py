@@ -18,7 +18,7 @@ class ScanConverter(MapToGraphConverter):
             previous = False
             next = False
             current = False
-            for x in range(1, self.whiteMap.x): #No need to check index 0 since we know it is a wall
+            for x in range(0, self.whiteMap.x): #No need to check index 0 since we know it is a wall
                 node = None
                 previous, current = current, next
                 next = self.whiteMap._[y][x]
